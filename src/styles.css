@@ -1,0 +1,45 @@
+/** @format */
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  margin: 35px;
+  align-items: center;
+  gap: 10px;
+}
+
+.board-container {
+  display: grid;
+  grid-template-rows: repeat(10, 1fr);
+
+  width: 50vw;
+}
+
+.board-row {
+  display: flex;
+  border: 0.1px solid #ccc;
+}
+
+.board-cell {
+  flex: 1;
+  width: 1rem;
+  height: 1rem;
+  border: 0.1px solid #ccc;
+  background-color: #1b95e0;
+}
+
+.ship {
+  background-color: grey;
+}
+
+.hit {
+  background-color: red;
+}
+
+.miss {
+  background-color: white;
+}
+
+.player1 {
+  margin-bottom: 50px;
+}
