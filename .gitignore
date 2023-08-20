@@ -89,7 +89,7 @@ out
 
 # Nuxt.js build / generate output
 .nuxt
-dist
+
 
 # Gatsby files
 .cache/
@@ -134,4 +134,4 @@ index.test.js
 /__mocks__
 jest.config.js
 fileTransformer.js
-webpack.config.js
+
