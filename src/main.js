@@ -1,6 +1,7 @@
 /** @format */
 
-const { ship, gameBoard, player, renderGameBoard } = require("./game.js");
+const { ship, gameBoard, player } = require("./game.js");
+const { renderGameBoard } = require("./render.js");
 
 const p1gameBoard = document.querySelector(".player1-board"); // Define p1gameBoard
 const p2gameBoard = document.querySelector(".player2-board");
@@ -9,7 +10,6 @@ let gameActive = false; //update based on win status
 
 //SETUP
 const gridSize = 10;
-
 //Make Game Boards
 const p1BoardInstance = gameBoard(gridSize);
 const player1Board = p1BoardInstance.createBoard();
@@ -80,19 +80,17 @@ p2BoardInstance.placeShip(player2Board, p2submarine, 2, 1, true);
 p2BoardInstance.placeShip(player2Board, p2patrolBoat, 6, 0, true);
 
 //Render board
+
 renderGameBoard(player1Board, p1gameBoard);
 renderGameBoard(player2Board, p2gameBoard);
 
 //Usage - attacks
 
-/* player2.attack(player1); */ //computer, no XY parameters needed
-/* player1.attack(player2, 6, 0); //player, pass co-ordinates
-player1.attack(player2, 9, 1); //player, pass co-ordinates */
+player2.attack(player1); //computer, no XY parameters needed
+/* player1.attack(player2, 6, 0); //player, pass co-ordinates */
+/* player1.attack(player2, 9, 1); //player, pass co-ordinates */
 
 module.exports = {
   player1Board,
   player2Board,
-  p1gameBoard,
-  p2gameBoard,
-  gridSize,
 };

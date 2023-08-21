@@ -6,8 +6,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
   mode: "development",
   entry: {
-    index: "./src/game.js",
-    game: "./src/main.js",
+    index: "./src/main.js",
   },
   devtool: "inline-source-map",
   devServer: {
