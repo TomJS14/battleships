@@ -1,18 +1,15 @@
 /** @format */
 
-const { player1Board } = require("./main.js");
+const { p1gameBoard } = require("./game.js");
+/* const p1gameBoard = document.querySelector(".player1-board"); */
 const gridSize = 10;
-const p1gameBoard = document.querySelector(".player1-board"); // Define p1gameBoard
-const p2gameBoard = document.querySelector(".player2-board");
 
 const renderGameBoard = (board, container) => {
-  console.log(board);
+  // Define p1gameBoard
   console.log(container);
-
   container.textContent = "";
   const boardContainer = document.createElement("div");
   boardContainer.classList.add("board-container");
-
   boardContainer.classList.add(
     container === p1gameBoard ? "player1" : "player2"
   );

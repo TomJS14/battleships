@@ -1,7 +1,7 @@
 /** @format */
 
 const { ship, gameBoard, player } = require("./game.js");
-const { renderGameBoard } = require("./render.js");
+const { renderGameBoard } = require("./render.js"); //circular??
 
 const p1gameBoard = document.querySelector(".player1-board"); // Define p1gameBoard
 const p2gameBoard = document.querySelector(".player2-board");
@@ -93,4 +93,5 @@ player2.attack(player1); //computer, no XY parameters needed
 module.exports = {
   player1Board,
   player2Board,
+  p1gameBoard,
 };

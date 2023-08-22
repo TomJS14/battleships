@@ -1,13 +1,7 @@
 /** @format */
 require("./styles.css");
 
-const {
-  player1Board,
-  player2Board,
-  p1gameBoard,
-  p2gameBoard,
-} = require("./main.js");
-
+const { player1Board, p1gameBoard } = require("./main.js");
 const { renderGameBoard } = require("./render.js");
 
 //Ship factory function
@@ -113,6 +107,7 @@ const player = (name, board, type, ships, gameBoardInstance) => {
 
   const attack = (enemy, x, y) => {
     const enemyBoard = gameBoardInstance;
+
     if (enemy.getType() === "Human") {
       const aiChoice = getAiChoice();
       const attackResult = enemyBoard.receiveAttack(
