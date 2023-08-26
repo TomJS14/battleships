@@ -1,10 +1,11 @@
 /** @format */
-require("./styles.css");
 
-const { player1Board, p1gameBoard } = require("./main.js");
-const { renderGameBoard } = require("./render.js");
+import { player1Board, player2Board } from "./main";
+import { renderGameBoard } from "./render";
 
-//Ship factory function
+const p1gameBoard = document.querySelector(".player1-board");
+const p2gameBoard = document.querySelector(".player2-board");
+
 const ship = (type, length, hitCount, sinkStatus, isVertical) => {
   const hit = (ship) => {
     ship.hitCount++;
@@ -16,10 +17,9 @@ const ship = (type, length, hitCount, sinkStatus, isVertical) => {
     }
     return ship.sinkStatus;
   };
+
   return { type, length, hitCount, sinkStatus, hit, isSunk, isVertical };
 };
-
-//gameboard factory
 
 const gameBoard = (gridSize) => {
   const createBoard = () => {
@@ -29,7 +29,8 @@ const gameBoard = (gridSize) => {
     return board;
   };
 
-  const placeShip = (board, ship, startingRow, startingCol, isVertical) => {
+  const placeShip = (board, ship, startingRow, startingCol) => {
+    const isVertical = ship.isVertical;
     const shipLength = ship.length;
     ship.startingRow = startingRow;
     ship.startingCol = startingCol;
@@ -75,14 +76,14 @@ const gameBoard = (gridSize) => {
     const allShipsSunk = ships.every((ship) => ship.sinkStatus);
 
     if (allShipsSunk) {
+      const messageBox = document.querySelector(".message");
+      messageBox.textContent = "YOU WIN";
       console.log("YOU WIN"); //end game loop and update UI
     }
   };
 
   return { createBoard, placeShip, receiveAttack, checkForWin };
 };
-
-//Player factory
 
 const player = (name, board, type, ships, gameBoardInstance) => {
   const getName = () => name; //change to input after UI created
@@ -107,7 +108,6 @@ const player = (name, board, type, ships, gameBoardInstance) => {
 
   const attack = (enemy, x, y) => {
     const enemyBoard = gameBoardInstance;
-
     if (enemy.getType() === "Human") {
       const aiChoice = getAiChoice();
       const attackResult = enemyBoard.receiveAttack(
@@ -135,19 +135,19 @@ const player = (name, board, type, ships, gameBoardInstance) => {
       );
       renderGameBoard(player2Board, p2gameBoard);
     }
-    return attackResult;
+    return renderGameBoard;
   };
 
-  return { name, board, type, getName, getType, attack, getAiChoice, ships };
+  return {
+    name,
+    board,
+    type,
+    getName,
+    getType,
+    attack,
+    getAiChoice,
+    ships,
+  };
 };
 
-//Render function
-
-//export for tests
-
-module.exports = {
-  ship,
-  gameBoard,
-  player,
-  renderGameBoard,
-};
+export { ship, gameBoard, player };

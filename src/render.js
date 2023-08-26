@@ -1,12 +1,9 @@
 /** @format */
 
-const { p1gameBoard } = require("./game.js");
-/* const p1gameBoard = document.querySelector(".player1-board"); */
-const gridSize = 10;
+import { p1gameBoard } from "./main.js";
 
 const renderGameBoard = (board, container) => {
-  // Define p1gameBoard
-  console.log(container);
+  const gridSize = 10;
   container.textContent = "";
   const boardContainer = document.createElement("div");
   boardContainer.classList.add("board-container");
@@ -29,8 +26,7 @@ const renderGameBoard = (board, container) => {
       } else if (typeof board[row][col] === "object") {
         cellElement.classList.add("ship");
       } else if (board[row][col] === "HIT") {
-        // Check for "HIT" status
-        cellElement.classList.add("hit"); // Add "hit" class
+        cellElement.classList.add("hit");
       } else if (board[row][col] === "MISS") {
         cellElement.classList.add("miss");
       } else if (board[row][col] === "SUNK") {
@@ -43,4 +39,4 @@ const renderGameBoard = (board, container) => {
   container.appendChild(boardContainer);
 };
 
-module.exports = { renderGameBoard };
+export { renderGameBoard };
