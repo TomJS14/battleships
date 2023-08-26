@@ -5,7 +5,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Battleships</title>
     <link rel="stylesheet" href="styles.css" />
   <script defer src="/index.bundle.js"></script></head>
   <body>
@@ -14,11 +14,20 @@
     </nav>
     <main>
       <div class="game-container">
-        <button class="start">Start Game</button>
+        <button id="start-button" class="start">Start Game</button>
+        <div class="message"></div>
+        <button id="test-attacks">TEST ATTACKS</button>
         <p>Player 1</p>
         <div class="player1-board"></div>
         <p>Player 2</p>
         <div class="player2-board"></div>
+        <div class="shipyard">
+          <div id="0" draggable="true" class="draggable ship carrier"></div>
+          <div id="1" draggable="true" class="draggable ship battleship"></div>
+          <div id="2" draggable="true" class="draggable ship destroyer"></div>
+          <div id="3" draggable="true" class="draggable ship submarine"></div>
+          <div id="4" draggable="true" class="draggable ship patrolBoat"></div>
+        </div>
       </div>
     </main>
   </body>
