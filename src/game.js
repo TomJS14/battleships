@@ -34,15 +34,33 @@ const gameBoard = (gridSize) => {
     const shipLength = ship.length;
     ship.startingRow = startingRow;
     ship.startingCol = startingCol;
+    let isValidPosition = checkIfValid(
+      startingRow,
+      startingCol,
+      shipLength,
+      isVertical
+    );
 
     for (let i = 0; i < shipLength; i++) {
-      if (isVertical) {
+      if (isVertical && isValidPosition) {
         board[startingRow + i][startingCol] = ship;
-      } else {
+      } else if (isValidPosition) {
         board[startingRow][startingCol + i] = ship;
       }
     }
     return board;
+  };
+
+  const checkIfValid = (startingRow, startingCol, shipLength, isVertical) => {
+    let valid;
+    if (isVertical) {
+      valid = startingRow + shipLength <= 10 ? true : false;
+    }
+    if (!isVertical) {
+      valid = startingCol + shipLength <= 10 ? true : false;
+    }
+
+    return valid;
   };
 
   const receiveAttack = (row, col, board, ships) => {
@@ -82,7 +100,7 @@ const gameBoard = (gridSize) => {
     }
   };
 
-  return { createBoard, placeShip, receiveAttack, checkForWin };
+  return { createBoard, placeShip, receiveAttack, checkForWin, checkIfValid };
 };
 
 const player = (name, board, type, ships, gameBoardInstance) => {

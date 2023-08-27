@@ -18,7 +18,7 @@ let p2BoardInstance = gameBoard(gridSize);
 let player2Board = p2BoardInstance.createBoard();
 
 //Make Player 1 ships
-const p1carrier = ship("carrier", 5, 0, false, false);
+const p1carrier = ship("carrier", 5, 0, false, true);
 const p1battleship = ship("battleship", 4, 0, false, false);
 const p1destroyer = ship("destroyer", 3, 0, false, false);
 const p1submarine = ship("submarine", 3, 0, false, false);
@@ -32,8 +32,8 @@ const p1AllShips = [
   p1patrolBoat,
 ];
 
+//Keep track of p1 dropped ships
 let droppedArray = [];
-
 let notDropped;
 
 //Make AI ships
@@ -77,16 +77,11 @@ renderGameBoard(player2Board, p2gameBoard);
 const startGameButton = document.querySelector("#start-button");
 startGameButton.addEventListener("click", startGame);
 
-/* const placePlayer2Ships = document.querySelector("#place-p2");
-placePlayer2Ships.addEventListener("click", placeP2Ships); */
-
-const attackTest = document.querySelector("#test-attacks");
-attackTest.addEventListener("click", testAttacks);
-
 function startGame() {
   if (droppedArray.length === 5) {
     messageBox.textContent = "Starting, the enemy is placing their ships....";
     console.log("starting game!");
+    gameActive = true;
     placeP2Ships();
   } else {
     messageBox.textContent = "Place all ships!";
@@ -101,32 +96,6 @@ function placeP2Ships() {
   p2BoardInstance.placeShip(player2Board, p2submarine, 2, 1);
   p2BoardInstance.placeShip(player2Board, p2patrolBoat, 6, 0);
   renderGameBoard(player2Board, p2gameBoard);
-}
-
-function testAttacks() {
-  //Usage - attacks for testing only
-
-  player2.attack(player1); //computer, no XY parameters needed
-  player1.attack(player2, 6, 0);
-  player1.attack(player2, 7, 0); //player, pass co-ordinates */
-  player1.attack(player2, 9, 1);
-  player1.attack(player2, 9, 2);
-  player1.attack(player2, 9, 3);
-  player1.attack(player2, 9, 4);
-  player1.attack(player2, 9, 5);
-
-  player1.attack(player2, 2, 1);
-  player1.attack(player2, 3, 1);
-  player1.attack(player2, 4, 1);
-
-  player1.attack(player2, 3, 3);
-  player1.attack(player2, 3, 4);
-  player1.attack(player2, 3, 5);
-
-  player1.attack(player2, 5, 2);
-  player1.attack(player2, 5, 3);
-  player1.attack(player2, 5, 4);
-  player1.attack(player2, 5, 5); //win
 }
 
 /* Drag player ships */
@@ -148,11 +117,12 @@ player1BoardContainer.addEventListener("drop", dropShip);
 function dragStart(e) {
   draggedShip = e.target;
   draggedShip.classList.add("dragging");
-  console.log(draggedShip);
+  notDropped = false;
 }
 
 function dragOver(e) {
   notDropped = false;
+
   e.preventDefault();
 }
 
@@ -164,12 +134,20 @@ function dropShip(e) {
   const startCol = parseInt(e.target.dataset.col, 10);
   const startRow = parseInt(e.target.dataset.row, 10);
   const thisShip = p1AllShips[draggedShip.id]; //get the id of the ship from the p1 ship array to place
-  droppedArray.push(thisShip);
-  console.log(droppedArray.length);
-  p1BoardInstance.placeShip(player1Board, thisShip, startRow, startCol);
 
-  if (!notDropped) {
+  const isValidPosition = p1BoardInstance.checkIfValid(
+    startRow,
+    startCol,
+    thisShip.length,
+    thisShip.isVertical
+  );
+
+  if (isValidPosition) {
+    droppedArray.push(thisShip);
+    p1BoardInstance.placeShip(player1Board, thisShip, startRow, startCol);
     draggedShip.remove();
+  } else {
+    notDropped = true;
   }
 
   renderGameBoard(player1Board, p1gameBoard);
@@ -181,9 +159,11 @@ player2BoardContainer.addEventListener("mouseover", hover);
 player2BoardContainer.addEventListener("mouseout", hover);
 
 function selectTarget(e) {
-  const col = parseInt(e.target.dataset.col, 10);
-  const row = parseInt(e.target.dataset.row, 10);
-  player1.attack(player2, row, col);
+  if (gameActive) {
+    const col = parseInt(e.target.dataset.col, 10);
+    const row = parseInt(e.target.dataset.row, 10);
+    player1.attack(player2, row, col);
+  }
 }
 
 function hover(e) {
@@ -193,11 +173,11 @@ function hover(e) {
 
 //Click new game
 //Add ability to rotate ships
-//Drag ships to position
-//Check all ships are placed
-//Add logic for checking if valid position
-//allow start game if true
-// click on enemy board and register result
+//Drag ships to position - DONE
+//Check all ships are placed - DONE
+//Add logic for checking if valid position - DONE
+//allow start game if true - DONE
+// click on enemy board and register result - DONE
 //Add logic to check if attack is valid - not selected before etc.
 //swap turn to computer - generate random turn
 // swap turn to player and repeat until win (checkForWin between turns)
