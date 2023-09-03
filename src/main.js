@@ -78,7 +78,7 @@ const startGameButton = document.querySelector("#start-button");
 startGameButton.addEventListener("click", startGame);
 
 function startGame() {
-  if (droppedArray.length === 5) {
+  if (droppedArray.length >= 1) {
     messageBox.textContent = "Starting, the enemy is placing their ships....";
     console.log("starting game!");
     gameActive = true;
@@ -175,7 +175,7 @@ function hover(e) {
 //Add ability to rotate ships
 //Drag ships to position - DONE
 //Check all ships are placed - DONE
-//Add logic for checking if valid position - DONE
+//Add logic for checking if valid position - DONE (Need to check not already occupied!)
 //allow start game if true - DONE
 // click on enemy board and register result - DONE
 //Add logic to check if attack is valid - not selected before etc.
@@ -184,4 +184,14 @@ function hover(e) {
 //If won, display message, disable event listeners and enable restart game
 //repeat
 
-export { player1Board, player2Board, p1gameBoard };
+console.log(p1BoardInstance);
+
+export {
+  player1Board,
+  player2Board,
+  p1gameBoard,
+  player1,
+  player2,
+  p1BoardInstance,
+  p2BoardInstance,
+};

@@ -1,10 +1,18 @@
 /** @format */
 
-import { player1Board, player2Board } from "./main";
+import {
+  player1,
+  player2,
+  player1Board,
+  player2Board,
+  p1BoardInstance,
+  p2BoardInstance,
+} from "./main";
 import { renderGameBoard } from "./render";
 
 const p1gameBoard = document.querySelector(".player1-board");
 const p2gameBoard = document.querySelector(".player2-board");
+let currentPlayer = "Human";
 
 const ship = (type, length, hitCount, sinkStatus, isVertical) => {
   const hit = (ship) => {
@@ -111,37 +119,27 @@ const player = (name, board, type, ships, gameBoardInstance) => {
   const getAiChoice = () => {
     //THIS IS VERY SLOW - UPDATE! initialise outside of factory?
     const availableSpots = [];
+
     for (let x = 0; x < board.length; x++) {
       for (let y = 0; y < board[x].length; y++) {
-        if (board[x][y] === "water") {
+        if (
+          board[x][y] !== "MISS" &&
+          board[x][y] !== "HIT" &&
+          board[x][y] !== "SUNK"
+        ) {
           availableSpots.push({ x, y });
         }
       }
     }
     const randomIndex = Math.floor(Math.random() * availableSpots.length);
     const aiChoice = availableSpots[randomIndex];
-
     return aiChoice;
   };
 
   const attack = (enemy, x, y) => {
-    const enemyBoard = gameBoardInstance;
-    if (enemy.getType() === "Human") {
-      const aiChoice = getAiChoice();
-      const attackResult = enemyBoard.receiveAttack(
-        aiChoice.x,
-        aiChoice.y,
-        enemy.board,
-        enemy.ships
-      );
-      console.log(attackResult);
-      console.log(
-        `${name} has attacked ${enemy.getName()} at ${aiChoice.x} x & ${
-          aiChoice.y
-        } Y and it is a ${attackResult}`
-      );
-      renderGameBoard(player1Board, p1gameBoard);
-    } else {
+    if (currentPlayer === "Human") {
+      console.log(`${currentPlayer} is taking aim!`);
+      const enemyBoard = p1BoardInstance;
       const attackResult = enemyBoard.receiveAttack(
         x,
         y,
@@ -149,10 +147,31 @@ const player = (name, board, type, ships, gameBoardInstance) => {
         enemy.ships
       );
       console.log(
-        `${name} has attacked ${enemy.getName()} at ${x} X & ${y} Y and it is a ${attackResult}`
+        `${currentPlayer} has attacked ${player2.getName()} and it is a ${attackResult}`
       );
       renderGameBoard(player2Board, p2gameBoard);
+
+      //computers turn
+      currentPlayer = "Computer";
+      console.log(`${currentPlayer} is taking aim!`);
+      function makeAiMove() {
+        const aiChoice = getAiChoice();
+        const aiAttackResult = p1BoardInstance.receiveAttack(
+          aiChoice.x,
+          aiChoice.y,
+          player1.board,
+          player1.ships
+        );
+        console.log(
+          `${currentPlayer} has attacked ${player1.getName()} and it is a ${aiAttackResult}`
+        );
+        renderGameBoard(player1Board, p1gameBoard);
+        currentPlayer = "Human";
+      }
+      setTimeout(makeAiMove, 400); //0.4s delay between turns
     }
+
+    //updateTurnMessage();
     return renderGameBoard;
   };
 
