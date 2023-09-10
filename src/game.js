@@ -42,33 +42,37 @@ const gameBoard = (gridSize) => {
     const shipLength = ship.length;
     ship.startingRow = startingRow;
     ship.startingCol = startingCol;
-    let isValidPosition = checkIfValid(
-      startingRow,
-      startingCol,
-      shipLength,
-      isVertical
-    );
+    //Check if ship placement is in bounds
+    if (
+      (isVertical && startingRow + shipLength > gridSize) ||
+      (!isVertical && startingCol + shipLength > gridSize)
+    ) {
+      return null; // Invalid placement
+    }
 
+    //Check if cells are already occupied
     for (let i = 0; i < shipLength; i++) {
-      if (isVertical && isValidPosition) {
+      if (isVertical) {
+        if (board[startingRow + i][startingCol] !== "water") {
+          return null;
+        }
+      } else {
+        if (board[startingRow][startingCol + i] !== "water") {
+          return null;
+        }
+      }
+    }
+
+    //otherwise valid, so place ship
+    for (let i = 0; i < shipLength; i++) {
+      if (isVertical) {
         board[startingRow + i][startingCol] = ship;
-      } else if (isValidPosition) {
+      } else {
         board[startingRow][startingCol + i] = ship;
       }
     }
+
     return board;
-  };
-
-  const checkIfValid = (startingRow, startingCol, shipLength, isVertical) => {
-    let valid;
-    if (isVertical) {
-      valid = startingRow + shipLength <= 10 ? true : false;
-    }
-    if (!isVertical) {
-      valid = startingCol + shipLength <= 10 ? true : false;
-    }
-
-    return valid;
   };
 
   const receiveAttack = (row, col, board, ships) => {
@@ -105,10 +109,11 @@ const gameBoard = (gridSize) => {
       const messageBox = document.querySelector(".message");
       messageBox.textContent = "YOU WIN";
       console.log("YOU WIN"); //end game loop and update UI
+      return true;
     }
   };
 
-  return { createBoard, placeShip, receiveAttack, checkForWin, checkIfValid };
+  return { createBoard, placeShip, receiveAttack, checkForWin };
 };
 
 const player = (name, board, type, ships, gameBoardInstance) => {

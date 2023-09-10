@@ -134,15 +134,14 @@ function dropShip(e) {
   const startCol = parseInt(e.target.dataset.col, 10);
   const startRow = parseInt(e.target.dataset.row, 10);
   const thisShip = p1AllShips[draggedShip.id]; //get the id of the ship from the p1 ship array to place
-
-  const isValidPosition = p1BoardInstance.checkIfValid(
+  const placementResult = p1BoardInstance.placeShip(
+    player1Board,
+    thisShip,
     startRow,
-    startCol,
-    thisShip.length,
-    thisShip.isVertical
+    startCol
   );
 
-  if (isValidPosition) {
+  if (placementResult) {
     droppedArray.push(thisShip);
     p1BoardInstance.placeShip(player1Board, thisShip, startRow, startCol);
     draggedShip.remove();
@@ -150,6 +149,7 @@ function dropShip(e) {
     notDropped = true;
   }
 
+  console.log(droppedArray);
   renderGameBoard(player1Board, p1gameBoard);
   draggedShip.classList.remove("dragging");
 }
@@ -178,9 +178,9 @@ function hover(e) {
 //Add logic for checking if valid position - DONE (Need to check not already occupied!)
 //allow start game if true - DONE
 // click on enemy board and register result - DONE
-//Add logic to check if attack is valid - not selected before etc.
-//swap turn to computer - generate random turn
-// swap turn to player and repeat until win (checkForWin between turns)
+//Add logic to check if attack is valid - not selected before etc. DONE
+//swap turn to computer - generate random turn DONE
+// swap turn to player and repeat until win (checkForWin between turns) DONE
 //If won, display message, disable event listeners and enable restart game
 //repeat
 

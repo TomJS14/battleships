@@ -25,6 +25,7 @@ const renderGameBoard = (board, container) => {
         cellElement.classList.add("water");
       } else if (typeof board[row][col] === "object") {
         cellElement.classList.add("ship");
+        cellElement.dataset.shipType = `${board[row][col].type}`;
       } else if (board[row][col] === "HIT") {
         cellElement.classList.add("hit");
       } else if (board[row][col] === "MISS") {

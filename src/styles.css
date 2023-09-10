@@ -59,6 +59,33 @@
   opacity: 0.5;
 }
 
+/* [data-ship-type="carrier"] {
+  background-color: #222 !important;
+  border-radius: 10px;
+  position: absolute;
+}
+
+[data-ship-type="carrier"]::before {
+  content: "";
+  width: 80%;
+  height: 60%;
+  background: #ccc;
+  position: absolute;
+  top: 10%;
+  left: 10%;
+}
+
+[data-ship-type="carrier"]::after {
+  content: "";
+  width: 20px;
+  height: 10px;
+  background: #555;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+} */
+
 .carrier {
   width: 12rem;
 }
