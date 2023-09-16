@@ -2,90 +2,123 @@
 require("./styles.css");
 
 import { ship, gameBoard, player } from "./game.js";
-import { renderGameBoard, resetGameBoard } from "./render.js";
+import { renderGameBoard } from "./render.js";
 
 const p1gameBoard = document.querySelector(".player1-board");
 const p2gameBoard = document.querySelector(".player2-board");
 const messageBox = document.querySelector(".message");
 
 let gameActive = false; //update based on status
+let restartable = false;
+let droppedArray = [];
+let player1Board, p1BoardInstance;
+let player2Board, p2BoardInstance; //This is causing block scope issue
+let notDropped;
+let p1carrier, p1battleship, p1destroyer, p1submarine, p1patrolBoat;
+let p2carrier, p2battleship, p2destroyer, p2submarine, p2patrolBoat;
+let p1AllShips, p2AllShips;
+
+function initialise() {
+  let gridSize = 10;
+  p1BoardInstance = gameBoard(gridSize);
+  player1Board = p1BoardInstance.createBoard();
+  p2BoardInstance = gameBoard(gridSize);
+  player2Board = p2BoardInstance.createBoard();
+
+  p1carrier = ship("carrier", 5, 0, false, true);
+  p1battleship = ship("battleship", 4, 0, false, false);
+  p1destroyer = ship("destroyer", 3, 0, false, false);
+  p1submarine = ship("submarine", 3, 0, false, false);
+  p1patrolBoat = ship("patrolBoat", 2, 0, false, false);
+
+  p1AllShips = [
+    p1carrier,
+    p1battleship,
+    p1destroyer,
+    p1submarine,
+    p1patrolBoat,
+  ];
+
+  p2carrier = ship("carrier", 5, 0, false, false);
+  p2battleship = ship("battleship", 4, 0, false, false);
+  p2destroyer = ship("destroyer", 3, 0, false, false);
+  p2submarine = ship("submarine", 3, 0, false, false);
+  p2patrolBoat = ship("patrolBoat", 2, 0, false, false);
+
+  p2AllShips = [
+    p2carrier,
+    p2destroyer,
+    p2battleship,
+    p2submarine,
+    p2patrolBoat,
+  ];
+
+  //Make Players
+  let player1 = player(
+    "Tom",
+    player1Board,
+    "Human",
+    p1AllShips,
+    p1BoardInstance
+  );
+
+  let player2 = player(
+    "Computer",
+    player2Board,
+    "AI",
+    p2AllShips,
+    p2BoardInstance
+  );
+
+  renderGameBoard(player1Board, p1gameBoard);
+  renderGameBoard(player2Board, p2gameBoard);
+
+  return {
+    p1BoardInstance,
+    player1,
+    player1Board,
+    p2BoardInstance,
+    player2,
+    player2Board,
+    p1AllShips,
+    p2AllShips,
+  };
+}
 
 //SETUP
-const gridSize = 10;
-let p1BoardInstance = gameBoard(gridSize);
-let player1Board = p1BoardInstance.createBoard();
-let p2BoardInstance = gameBoard(gridSize);
-let player2Board = p2BoardInstance.createBoard();
-
-//Make Player 1 ships
-const p1carrier = ship("carrier", 5, 0, false, true);
-const p1battleship = ship("battleship", 4, 0, false, false);
-const p1destroyer = ship("destroyer", 3, 0, false, false);
-const p1submarine = ship("submarine", 3, 0, false, false);
-const p1patrolBoat = ship("patrolBoat", 2, 0, false, false);
-
-const p1AllShips = [
-  p1carrier,
-  p1battleship,
-  p1destroyer,
-  p1submarine,
-  p1patrolBoat,
-];
-
-//Keep track of p1 dropped ships
-let droppedArray = [];
-let notDropped;
-
-//Make AI ships
-const p2carrier = ship("carrier", 5, 0, false, false);
-const p2battleship = ship("battleship", 4, 0, false, false);
-const p2destroyer = ship("destroyer", 3, 0, false, false);
-const p2submarine = ship("submarine", 3, 0, false, false);
-const p2patrolBoat = ship("patrolBoat", 2, 0, false, false);
-
-const p2AllShips = [
-  p2carrier,
-  p2destroyer,
-  p2battleship,
-  p2submarine,
-  p2patrolBoat,
-];
-
-//Make Players
-const player1 = player(
-  "Tom",
-  player1Board,
-  "Human",
-  p1AllShips,
-  p1BoardInstance
-);
-
-const player2 = player(
-  "Computer",
+const {
+  player1,
+  player2,
+  /* player1Board,
+  p1BoardInstance,
   player2Board,
-  "AI",
-  p2AllShips,
-  p2BoardInstance
-);
-
-//Render Initial Board
-renderGameBoard(player1Board, p1gameBoard);
-renderGameBoard(player2Board, p2gameBoard);
-
-//Game loop
+  p2BoardInstance, */
+} = initialise();
 
 const startGameButton = document.querySelector("#start-button");
 startGameButton.addEventListener("click", startGame);
 
 function startGame() {
-  if (droppedArray.length >= 1) {
-    messageBox.textContent = "Starting, the enemy is placing their ships....";
-    console.log("starting game!");
+  if (droppedArray.length >= 1 && gameActive == false && restartable == false) {
+    messageBox.textContent = "Starting, the enemy is placing their ships...";
     gameActive = true;
-    placeP2Ships();
+    restartable = false;
+    startGameButton.disabled = true;
+    placeP2Ships(); //only call once!
+  } else if (gameActive == false && restartable == true) {
+    messageBox.textContent = "Restarting, Place your ships!";
+    console.log("restarting");
+    startGameButton.textContent = "Start game";
+    restartable = false;
+    gameActive = false;
+
+    //logic for resetting game state
+    initialise();
+    console.log(player1Board);
+    console.log(player2Board);
+    console.log(player2.ships, player1.ships);
   } else {
-    messageBox.textContent = "Place all ships!";
-    console.log("Place all ships!");
+    messageBox.textContent = "Place all of your ships first";
   }
 }
 
@@ -162,7 +195,16 @@ function selectTarget(e) {
   if (gameActive) {
     const col = parseInt(e.target.dataset.col, 10);
     const row = parseInt(e.target.dataset.row, 10);
-    player1.attack(player2, row, col);
+    const attackResult = player1.attack(player2, row, col);
+    const isGameWon = p2BoardInstance.checkForWin(player2.ships);
+
+    if (isGameWon) {
+      messageBox.textContent = "Game over, you win!";
+      gameActive = false;
+      startGameButton.textContent = "Restart";
+      startGameButton.disabled = false;
+      restartable = true;
+    }
   }
 }
 
@@ -170,21 +212,6 @@ function hover(e) {
   let highlightedCell = e.target;
   highlightedCell.classList.toggle("highlighted");
 }
-
-//Click new game
-//Add ability to rotate ships
-//Drag ships to position - DONE
-//Check all ships are placed - DONE
-//Add logic for checking if valid position - DONE (Need to check not already occupied!)
-//allow start game if true - DONE
-// click on enemy board and register result - DONE
-//Add logic to check if attack is valid - not selected before etc. DONE
-//swap turn to computer - generate random turn DONE
-// swap turn to player and repeat until win (checkForWin between turns) DONE
-//If won, display message, disable event listeners and enable restart game
-//repeat
-
-console.log(p1BoardInstance);
 
 export {
   player1Board,

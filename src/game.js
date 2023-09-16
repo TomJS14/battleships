@@ -102,15 +102,15 @@ const gameBoard = (gridSize) => {
   };
 
   const checkForWin = (ships) => {
-    //logic to report whether all ships have been sunk, call after each turn
+    //called after each turn
     const allShipsSunk = ships.every((ship) => ship.sinkStatus);
 
     if (allShipsSunk) {
-      const messageBox = document.querySelector(".message");
-      messageBox.textContent = "YOU WIN";
-      console.log("YOU WIN"); //end game loop and update UI
       return true;
+
+      //end game loop and update UI
     }
+    return false;
   };
 
   return { createBoard, placeShip, receiveAttack, checkForWin };
@@ -151,9 +151,9 @@ const player = (name, board, type, ships, gameBoardInstance) => {
         enemy.board,
         enemy.ships
       );
-      console.log(
+      /* console.log(
         `${currentPlayer} has attacked ${player2.getName()} and it is a ${attackResult}`
-      );
+      ); */
       renderGameBoard(player2Board, p2gameBoard);
 
       //computers turn
@@ -167,9 +167,9 @@ const player = (name, board, type, ships, gameBoardInstance) => {
           player1.board,
           player1.ships
         );
-        console.log(
+        /* console.log(
           `${currentPlayer} has attacked ${player1.getName()} and it is a ${aiAttackResult}`
-        );
+        ); */
         renderGameBoard(player1Board, p1gameBoard);
         currentPlayer = "Human";
       }
