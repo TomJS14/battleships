@@ -7,11 +7,11 @@ import {
   player2Board,
   p1BoardInstance,
   p2BoardInstance,
+  p1gameBoard,
+  p2gameBoard,
 } from "./main";
 import { renderGameBoard } from "./render";
 
-const p1gameBoard = document.querySelector(".player1-board");
-const p2gameBoard = document.querySelector(".player2-board");
 let currentPlayer = "Human";
 
 const ship = (type, length, hitCount, sinkStatus, isVertical) => {
@@ -35,6 +35,12 @@ const gameBoard = (gridSize) => {
       .fill(null)
       .map(() => new Array(gridSize).fill("water"));
     return board;
+  };
+
+  const resetBoard = () => {
+    //Not being used currently
+    this.board = [];
+    this.board = this.createBoard();
   };
 
   const placeShip = (board, ship, startingRow, startingCol) => {
@@ -113,7 +119,7 @@ const gameBoard = (gridSize) => {
     return false;
   };
 
-  return { createBoard, placeShip, receiveAttack, checkForWin };
+  return { createBoard, resetBoard, placeShip, receiveAttack, checkForWin };
 };
 
 const player = (name, board, type, ships, gameBoardInstance) => {
@@ -143,7 +149,6 @@ const player = (name, board, type, ships, gameBoardInstance) => {
 
   const attack = (enemy, x, y) => {
     if (currentPlayer === "Human") {
-      console.log(`${currentPlayer} is taking aim!`);
       const enemyBoard = p1BoardInstance;
       const attackResult = enemyBoard.receiveAttack(
         x,
@@ -158,7 +163,6 @@ const player = (name, board, type, ships, gameBoardInstance) => {
 
       //computers turn
       currentPlayer = "Computer";
-      console.log(`${currentPlayer} is taking aim!`);
       function makeAiMove() {
         const aiChoice = getAiChoice();
         const aiAttackResult = p1BoardInstance.receiveAttack(

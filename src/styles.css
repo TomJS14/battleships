@@ -59,11 +59,11 @@
   opacity: 0.5;
 }
 
-[data-ship-type="carrier"] {
+/* [data-ship-type="carrier"] {
   background-color: #222 !important;
   border-radius: 6px;
   position: relative;
-}
+} */
 
 /* [data-ship-type="carrier"]::before {
   content: "";
@@ -84,9 +84,9 @@
   top: 10%;
   left: 50%;
   transform: translateX(-50%);
-}
+} */
 
-[data-ship-type="destroyer"] {
+/* [data-ship-type="destroyer"] {
   background-color: #222 !important;
   border-radius: 10px;
   position: absolute;
