@@ -25,11 +25,11 @@ module.exports = {
     clean: true,
     publicPath: "/",
   },
-  optimization: {
+  /* optimization: {
     splitChunks: {
       chunks: "all",
     },
-  },
+  }, */
   module: {
     rules: [
       {
