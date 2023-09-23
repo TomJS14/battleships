@@ -22,7 +22,7 @@
 }
 
 .shipyard {
-  background-color: grey;
+  background-color: cyan;
   width: 50vw;
   height: 40vw;
   margin: 10px;
@@ -42,7 +42,13 @@
 }
 
 .ship {
-  background-color: green;
+  background-color: grey;
+  height: 1rem;
+  border: 1px solid white;
+}
+
+.enemy-ship {
+  background-color: orange;
   height: 1rem;
   border: 1px solid white;
 }

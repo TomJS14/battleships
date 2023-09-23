@@ -14,7 +14,17 @@ let p1carrier, p1battleship, p1destroyer, p1submarine, p1patrolBoat;
 let p2carrier, p2battleship, p2destroyer, p2submarine, p2patrolBoat;
 let p1AllShips, p2AllShips;
 let draggedShip;
-/* let p1BoardInstance, p2BoardInstance; */ //BLock scoped variable clash
+let gridSize = 10;
+let p1BoardInstance = gameBoard(gridSize);
+let player1Board = p1BoardInstance.createBoard();
+let p2BoardInstance = gameBoard(gridSize);
+let player2Board = p2BoardInstance.createBoard();
+let player1;
+let player2;
+let p1gameBoard, p2gameBoard;
+let shipyardShips;
+let startGameButton;
+let messageBox;
 
 function setUpDom() {
   //gameContainer
@@ -22,28 +32,30 @@ function setUpDom() {
   gameContainer.setAttribute("class", "game-container");
 
   //Start button
-  const startGameButton = document.createElement("button");
+  startGameButton = document.createElement("button");
   startGameButton.setAttribute("id", "start-button");
   startGameButton.setAttribute("class", "start");
   startGameButton.textContent = "Press to Start";
   gameContainer.appendChild(startGameButton);
 
   //Message box
-  const messageBox = document.createElement("div");
+  messageBox = document.createElement("div");
   messageBox.setAttribute("class", "message");
   gameContainer.appendChild(messageBox);
 
   //Gameboards
   const player1Label = document.createElement("p");
-  player1Label.textContent = "Player 1";
+  const playerName = prompt("What's your name", "Player 1");
+  //Check PlayerName for null, if so default to Player1
+  player1Label.textContent = playerName ? playerName : "You";
   gameContainer.appendChild(player1Label);
-  const p1gameBoard = document.createElement("div");
+  p1gameBoard = document.createElement("div");
   p1gameBoard.setAttribute("class", "player1-board");
   gameContainer.appendChild(p1gameBoard);
   const player2Label = document.createElement("p");
-  player2Label.textContent = "Player 2";
+  player2Label.textContent = "Computer";
   gameContainer.appendChild(player2Label);
-  const p2gameBoard = document.createElement("div");
+  p2gameBoard = document.createElement("div");
   p2gameBoard.setAttribute("class", "player2-board");
   gameContainer.appendChild(p2gameBoard);
 
@@ -93,7 +105,7 @@ function setUpDom() {
   ship5.setAttribute("draggable", "true");
   shipyard.appendChild(ship5);
 
-  const shipyardShips = [ship1, ship2, ship3, ship4, ship5];
+  shipyardShips = [ship1, ship2, ship3, ship4, ship5];
 
   main.appendChild(gameContainer);
 
@@ -108,16 +120,7 @@ function setUpDom() {
   };
 }
 
-const { p1gameBoard, p2gameBoard, startGameButton, shipyardShips, messageBox } =
-  setUpDom();
-
 function initialise() {
-  let gridSize = 10;
-  const p1BoardInstance = gameBoard(gridSize);
-  const player1Board = p1BoardInstance.createBoard();
-  const p2BoardInstance = gameBoard(gridSize);
-  const player2Board = p2BoardInstance.createBoard();
-
   p1carrier = ship("carrier", 5, 0, false, true);
   p1battleship = ship("battleship", 4, 0, false, false);
   p1destroyer = ship("destroyer", 3, 0, false, false);
@@ -147,21 +150,15 @@ function initialise() {
   ];
 
   //Make Players
-  const player1 = player(
-    "Tom",
+  player1 = player(
+    "Player 1",
     player1Board,
     "Human",
     p1AllShips,
     p1BoardInstance
   );
 
-  const player2 = player(
-    "Computer",
-    player2Board,
-    "AI",
-    p2AllShips,
-    p2BoardInstance
-  );
+  player2 = player("Computer", player2Board, "AI", p2AllShips, p2BoardInstance);
 
   renderGameBoard(player1Board, p1gameBoard);
   renderGameBoard(player2Board, p2gameBoard);
@@ -170,26 +167,14 @@ function initialise() {
   setupEventListeners(p1gameBoard, p2gameBoard);
 
   return {
-    p1BoardInstance,
     player1,
     player1Board,
-    p2BoardInstance,
+    p1AllShips,
     player2,
     player2Board,
-    p1AllShips,
     p2AllShips,
   };
 }
-
-//SETUP
-const {
-  player1,
-  player2,
-  player1Board,
-  p1BoardInstance,
-  player2Board,
-  p2BoardInstance,
-} = initialise();
 
 function setupEventListeners(p1gameBoard, p2gameBoard) {
   shipyardShips.forEach((draggable) => {
@@ -214,13 +199,13 @@ function startGame() {
     startGameButton.disabled = true;
     placeP2Ships(); //Up
   } else if (gameActive == false && restartable == true) {
-    resetGame(p1BoardInstance); //logic for resetting game state - Move the rest in here!
+    resetGame(); //logic for resetting game state - Move the rest in here!
   } else {
     messageBox.textContent = "Place all of your ships first";
   }
 }
 
-function resetGame(boardInstance) {
+function resetGame() {
   //Update Messages
   messageBox.textContent = "Restarting, Place your ships!";
   startGameButton.textContent = "Start game";
@@ -228,22 +213,21 @@ function resetGame(boardInstance) {
   restartable = false;
   gameActive = false;
   droppedArray = [];
+  p1BoardInstance = gameBoard(gridSize);
+  player1Board = p1BoardInstance.createBoard();
+  p2BoardInstance = gameBoard(gridSize);
+  player2Board = p2BoardInstance.createBoard();
+  initialise();
+
   //clear the dom
   main.textContent = "";
-  //Set up event listeners & render
-  const {
-    player1,
-    player2,
-    player1Board,
-    p1BoardInstance,
-    player2Board,
-    p2BoardInstance,
-  } = initialise();
 
+  //Set up event listeners & render
   const { p1gameBoard, p2gameBoard } = setUpDom();
-  setupEventListeners(p1gameBoard, p2gameBoard);
+
   renderGameBoard(player1Board, p1gameBoard);
   renderGameBoard(player2Board, p2gameBoard);
+  setupEventListeners(p1gameBoard, p2gameBoard);
 }
 
 function placeP2Ships() {
@@ -277,7 +261,7 @@ function dropShip(e) {
   const startRow = parseInt(e.target.dataset.row, 10);
 
   const thisShip = p1AllShips[draggedShip.id];
-  //This is incorrectly using the old board not the newly created
+  const shipName = draggedShip.dataset.shipType;
   const placementResult = p1BoardInstance.placeShip(
     player1Board,
     thisShip,
@@ -285,27 +269,26 @@ function dropShip(e) {
     startCol
   );
 
-  console.log(placementResult); // returning null due to old board as above
-
   if (placementResult) {
     droppedArray.push(thisShip);
     p1BoardInstance.placeShip(player1Board, thisShip, startRow, startCol);
     draggedShip.remove();
+    messageBox.textContent = `You've placed your ${shipName}`;
   } else {
     notDropped = true;
+    messageBox.textContent = "Can't go there, try again!";
   }
-
-  console.log(droppedArray);
-  console.log(player1Board);
   renderGameBoard(player1Board, p1gameBoard);
   draggedShip.classList.remove("dragging");
 }
 
 function selectTarget(e) {
   if (gameActive) {
+    const cell = e.target;
     const col = parseInt(e.target.dataset.col, 10);
     const row = parseInt(e.target.dataset.row, 10);
     const attackResult = player1.attack(player2, row, col);
+
     const isGameWon = p2BoardInstance.checkForWin(player2.ships);
 
     if (isGameWon) {
@@ -323,6 +306,10 @@ function hover(e) {
   highlightedCell.classList.toggle("highlighted");
 }
 
+//SETUP GAME
+setUpDom();
+initialise();
+
 export {
   player1Board,
   player2Board,
@@ -332,4 +319,5 @@ export {
   player2,
   p1BoardInstance,
   p2BoardInstance,
+  messageBox,
 };

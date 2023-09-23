@@ -6,9 +6,9 @@ import {
   player1Board,
   player2Board,
   p1BoardInstance,
-  p2BoardInstance,
   p1gameBoard,
   p2gameBoard,
+  messageBox,
 } from "./main";
 import { renderGameBoard } from "./render";
 
@@ -156,9 +156,18 @@ const player = (name, board, type, ships, gameBoardInstance) => {
         enemy.board,
         enemy.ships
       );
-      /* console.log(
-        `${currentPlayer} has attacked ${player2.getName()} and it is a ${attackResult}`
-      ); */
+
+      //To Update messages to display which ship is sunk
+      if (attackResult == "HIT") {
+        messageBox.textContent = `You've got a ${attackResult}!`;
+      }
+      if (attackResult == "MISS") {
+        messageBox.textContent = `You Missed`;
+      }
+      if (attackResult == "SUNK") {
+        messageBox.textContent = `BOOM! You sunk computers ship`;
+      }
+
       renderGameBoard(player2Board, p2gameBoard);
 
       //computers turn
@@ -171,13 +180,22 @@ const player = (name, board, type, ships, gameBoardInstance) => {
           player1.board,
           player1.ships
         );
-        /* console.log(
-          `${currentPlayer} has attacked ${player1.getName()} and it is a ${aiAttackResult}`
-        ); */
+
+        //To Update messages to display which ship is sunk
+        if (aiAttackResult == "HIT") {
+          messageBox.textContent = `They've got a ${aiAttackResult}!`;
+        }
+        if (aiAttackResult == "MISS") {
+          messageBox.textContent = `They Missed!`;
+        }
+        if (aiAttackResult == "SUNK") {
+          messageBox.textContent = `BOOM! Computer sunk your ship!`;
+        }
+
         renderGameBoard(player1Board, p1gameBoard);
         currentPlayer = "Human";
       }
-      setTimeout(makeAiMove, 400); //0.4s delay between turns
+      setTimeout(makeAiMove, 800); //0.8s delay between turns
     }
 
     //updateTurnMessage();
