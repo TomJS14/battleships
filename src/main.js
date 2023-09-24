@@ -211,7 +211,6 @@ function startGame() {
 }
 
 function resetGame() {
-  //Update Messages
   messageBox.textContent = "Restarting, Place your ships!";
   startGameButton.textContent = "Start game";
   //Update global variables
