@@ -7,6 +7,9 @@ import backgroundImage from "./wallpaper.jpg";
 const main = document.querySelector(".main");
 const playerName = prompt("What's your name", "You");
 
+const backgroundImg = document.querySelector(".background-img");
+backgroundImg.style.backgroundImage = `url(${backgroundImage})`;
+
 //Global Game state variables -- To refactor & Encapsulate
 let gameActive = false;
 let restartable = false;
@@ -345,9 +348,6 @@ function handleResultValidation() {
 //SETUP GAME
 setUpDom();
 initialise();
-
-const backgroundImg = document.querySelector(".background-img");
-backgroundImg.style.backgroundImage = `url(${backgroundImage})`;
 
 export {
   player1Board,
