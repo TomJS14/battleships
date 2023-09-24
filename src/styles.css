@@ -1,5 +1,39 @@
 /** @format */
 
+.start {
+  background: #5e5df0;
+  border-radius: 99px;
+  box-shadow: #5e5df0 0 10px 20px -10px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji",
+    NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji",
+    EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue",
+    "Noto Sans", sans-serif;
+  font-weight: 700;
+  line-height: 24px;
+  padding: 8px 18px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: fit-content;
+  word-break: break-word;
+  border: 0;
+}
+
+.start:disabled {
+  opacity: 0;
+  cursor: auto;
+}
+
+.message {
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-align: center;
+  width: 50%;
+}
+
 .message {
   border: 1px solid black;
   width: 20rem;
@@ -39,6 +73,7 @@
   height: 1rem;
   border: 0.1px dotted #ccc;
   background-color: #1b95e0;
+  cursor: url("crosshair.png") 12 12, crosshair;
 }
 
 .ship {

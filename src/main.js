@@ -192,14 +192,19 @@ function setupEventListeners(p1gameBoard, p2gameBoard) {
 }
 
 function startGame() {
-  if (droppedArray.length >= 1 && gameActive == false && restartable == false) {
+  if (
+    droppedArray.length >= p1AllShips.length &&
+    gameActive == false &&
+    restartable == false
+  ) {
     messageBox.textContent = "Starting, the enemy is placing their ships...";
     gameActive = true;
     restartable = false;
     startGameButton.disabled = true;
-    placeP2Ships(); //Up
+
+    placeP2Ships();
   } else if (gameActive == false && restartable == true) {
-    resetGame(); //logic for resetting game state - Move the rest in here!
+    resetGame();
   } else {
     messageBox.textContent = "Place all of your ships first";
   }
@@ -284,19 +289,12 @@ function dropShip(e) {
 
 function selectTarget(e) {
   if (gameActive) {
-    const cell = e.target;
-    const col = parseInt(e.target.dataset.col, 10);
-    const row = parseInt(e.target.dataset.row, 10);
-    const attackResult = player1.attack(player2, row, col);
-
-    const isGameWon = p2BoardInstance.checkForWin(player2.ships);
-
-    if (isGameWon) {
-      messageBox.textContent = "Game over, you win!";
-      gameActive = false;
-      startGameButton.textContent = "Restart";
-      startGameButton.disabled = false;
-      restartable = true;
+    let cell = e.target;
+    if (cell && !cell.classList.contains("disabled")) {
+      const col = parseInt(cell.dataset.col, 10);
+      const row = parseInt(cell.dataset.row, 10);
+      player1.attack(player2, row, col);
+      setTimeout(handleResultValidation, 800); //Set this longer than the move delay
     }
   }
 }
@@ -304,6 +302,27 @@ function selectTarget(e) {
 function hover(e) {
   let highlightedCell = e.target;
   highlightedCell.classList.toggle("highlighted");
+}
+
+function handleResultValidation() {
+  const isGameWon = p2BoardInstance.checkForWin(player2.ships);
+  const isGameLost = p1BoardInstance.checkForWin(player1.ships);
+
+  if (isGameWon || isGameLost) {
+    gameActive = false;
+
+    startGameButton.textContent = "Restart";
+    startGameButton.disabled = false;
+    restartable = true;
+    p2gameBoard.removeEventListener("click", selectTarget);
+
+    if (isGameWon) {
+      messageBox.textContent = "Game over, you win!";
+    }
+    if (isGameLost) {
+      messageBox.textContent = "Game over, you Lose!";
+    }
+  }
 }
 
 //SETUP GAME

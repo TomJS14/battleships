@@ -122,7 +122,7 @@ const gameBoard = (gridSize) => {
   return { createBoard, resetBoard, placeShip, receiveAttack, checkForWin };
 };
 
-const player = (name, board, type, ships, gameBoardInstance) => {
+const player = (name, board, type, ships) => {
   const getName = () => name; //change to input after UI created
 
   const getType = () => type; //Human or AI
@@ -169,33 +169,36 @@ const player = (name, board, type, ships, gameBoardInstance) => {
       }
 
       renderGameBoard(player2Board, p2gameBoard);
+      const allP2shipsSunk = enemy.ships.every((ship) => ship.sinkStatus);
 
-      //computers turn
-      currentPlayer = "Computer";
-      function makeAiMove() {
-        const aiChoice = getAiChoice();
-        const aiAttackResult = p1BoardInstance.receiveAttack(
-          aiChoice.x,
-          aiChoice.y,
-          player1.board,
-          player1.ships
-        );
+      //computers turn if not all sunk
+      if (!allP2shipsSunk) {
+        currentPlayer = "Computer";
+        function makeAiMove() {
+          const aiChoice = getAiChoice();
+          const aiAttackResult = p1BoardInstance.receiveAttack(
+            aiChoice.x,
+            aiChoice.y,
+            player1.board,
+            player1.ships
+          );
 
-        //To Update messages to display which ship is sunk
-        if (aiAttackResult == "HIT") {
-          messageBox.textContent = `They've got a ${aiAttackResult}!`;
-        }
-        if (aiAttackResult == "MISS") {
-          messageBox.textContent = `They Missed!`;
-        }
-        if (aiAttackResult == "SUNK") {
-          messageBox.textContent = `BOOM! Computer sunk your ship!`;
-        }
+          //To Update messages to display which ship is sunk
+          if (aiAttackResult == "HIT") {
+            messageBox.textContent = `They've got a ${aiAttackResult}!`;
+          }
+          if (aiAttackResult == "MISS") {
+            messageBox.textContent = `They Missed!`;
+          }
+          if (aiAttackResult == "SUNK") {
+            messageBox.textContent = `BOOM! Computer sunk your ship!`;
+          }
 
-        renderGameBoard(player1Board, p1gameBoard);
-        currentPlayer = "Human";
+          renderGameBoard(player1Board, p1gameBoard);
+          currentPlayer = "Human";
+        }
+        setTimeout(makeAiMove, 700); //0.8s delay between turns
       }
-      setTimeout(makeAiMove, 800); //0.8s delay between turns
     }
 
     //updateTurnMessage();

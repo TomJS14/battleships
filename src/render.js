@@ -32,10 +32,13 @@ const renderGameBoard = (board, container) => {
         cellElement.dataset.shipType = `${board[row][col].type}`;
       } else if (board[row][col] === "HIT") {
         cellElement.classList.add("hit");
+        cellElement.classList.add("disabled");
       } else if (board[row][col] === "MISS") {
         cellElement.classList.add("miss");
+        cellElement.classList.add("disabled");
       } else if (board[row][col] === "SUNK") {
         cellElement.classList.add("sunk");
+        cellElement.classList.add("disabled");
       }
       rowElement.appendChild(cellElement);
     }
