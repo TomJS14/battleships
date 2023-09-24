@@ -1,6 +1,7 @@
 /** @format */
 
 :root {
+  font-family: "Ysabeau SC", sans-serif;
   font-size: 24px;
   color: white;
   --dark-cyan: #0e9594;
@@ -38,6 +39,10 @@ main {
   z-index: -1;
 }
 
+.draggable {
+  text-align: center;
+}
+
 .info {
   display: flex;
   gap: 5px;
@@ -57,6 +62,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: black;
 }
 
 .board-container {
@@ -64,11 +70,19 @@ main {
   flex-direction: column;
 }
 
+.shipyardContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: black;
+  font-weight: 700;
+}
+
 .shipyard {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
-  background-color: #5abcd8;
+  background-color: rgba(56, 118, 217, 0.4);
   padding: 10px;
   width: 38vw;
   min-height: 15vw;
@@ -104,11 +118,14 @@ main {
 }
 
 .message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 1.2rem;
   font-weight: 500;
   text-align: center;
-  width: 50%;
   border: 1px solid black;
+  border-radius: 5px;
   width: 20rem;
   height: 4rem;
 }
@@ -123,6 +140,7 @@ main {
   width: 1rem;
   height: 1rem;
   border: 0.1px dotted #ccc;
+  border-radius: 3px;
   background-color: #1b95e0;
   cursor: url("crosshair.png") 12 12, crosshair;
 }

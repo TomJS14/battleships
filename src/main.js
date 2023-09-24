@@ -5,9 +5,7 @@ import { ship, gameBoard, player } from "./game.js";
 import { renderGameBoard } from "./render.js";
 import backgroundImage from "./wallpaper.jpg";
 const main = document.querySelector(".main");
-const backgroundImg = document.querySelector(".background-img");
-const playerName = prompt("What's your name", "Player 1");
-backgroundImg.style.backgroundImage = `url(${backgroundImage})`;
+const playerName = prompt("What's your name", "You");
 
 //Global Game state variables -- To refactor & Encapsulate
 let gameActive = false;
@@ -48,6 +46,7 @@ function setUpDom() {
 
   //Message box
   messageBox = document.createElement("div");
+  messageBox.textContent = "Time for war, place your ships!";
   messageBox.setAttribute("class", "message");
   infoSection.appendChild(messageBox);
 
@@ -69,6 +68,11 @@ function setUpDom() {
   const shipyardContainer = document.createElement("div");
   shipyardContainer.setAttribute("class", "shipyardContainer");
 
+  //shipyard label
+  const shipyardLabel = document.createElement("div");
+  shipyardLabel.textContent = "Your Shipyard";
+  shipyardContainer.appendChild(shipyardLabel);
+
   //Shipyard
   const shipyard = document.createElement("div");
   shipyard.setAttribute("class", "shipyard");
@@ -77,6 +81,7 @@ function setUpDom() {
 
   //1
   const ship1 = document.createElement("div");
+
   ship1.setAttribute("data-ship-type", "carrier");
   ship1.setAttribute("id", "0");
   ship1.setAttribute("class", "draggable ship carrier");
@@ -203,16 +208,17 @@ function setupEventListeners(p1gameBoard, p2gameBoard) {
   startGameButton.addEventListener("click", startGame);
 }
 
-function startGame() {
+function startGame(shipyard) {
   if (
     droppedArray.length >= p1AllShips.length &&
     gameActive == false &&
     restartable == false
   ) {
-    messageBox.textContent = "Starting, the enemy is placing their ships...";
+    messageBox.textContent = "Starting, take your shot!";
     gameActive = true;
     restartable = false;
     startGameButton.disabled = true;
+    shipyard.textContent = "";
 
     placeP2Ships();
   } else if (gameActive == false && restartable == true) {
@@ -339,6 +345,9 @@ function handleResultValidation() {
 //SETUP GAME
 setUpDom();
 initialise();
+
+const backgroundImg = document.querySelector(".background-img");
+backgroundImg.style.backgroundImage = `url(${backgroundImage})`;
 
 export {
   player1Board,
