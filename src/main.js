@@ -3,7 +3,11 @@ require("./styles.css");
 
 import { ship, gameBoard, player } from "./game.js";
 import { renderGameBoard } from "./render.js";
+import backgroundImage from "./wallpaper.jpg";
 const main = document.querySelector(".main");
+const backgroundImg = document.querySelector(".background-img");
+const playerName = prompt("What's your name", "Player 1");
+backgroundImg.style.backgroundImage = `url(${backgroundImage})`;
 
 //Global Game state variables -- To refactor & Encapsulate
 let gameActive = false;
@@ -31,38 +35,44 @@ function setUpDom() {
   const gameContainer = document.createElement("div");
   gameContainer.setAttribute("class", "game-container");
 
+  //Info section
+  const infoSection = document.createElement("div");
+  infoSection.setAttribute("class", "info");
+
   //Start button
   startGameButton = document.createElement("button");
   startGameButton.setAttribute("id", "start-button");
   startGameButton.setAttribute("class", "start");
   startGameButton.textContent = "Press to Start";
-  gameContainer.appendChild(startGameButton);
+  infoSection.appendChild(startGameButton);
 
   //Message box
   messageBox = document.createElement("div");
   messageBox.setAttribute("class", "message");
-  gameContainer.appendChild(messageBox);
+  infoSection.appendChild(messageBox);
 
   //Gameboards
   const player1Label = document.createElement("p");
-  const playerName = prompt("What's your name", "Player 1");
-  //Check PlayerName for null, if so default to Player1
-  player1Label.textContent = playerName ? playerName : "You";
-  gameContainer.appendChild(player1Label);
+
   p1gameBoard = document.createElement("div");
   p1gameBoard.setAttribute("class", "player1-board");
+  p1gameBoard.appendChild(player1Label);
   gameContainer.appendChild(p1gameBoard);
   const player2Label = document.createElement("p");
-  player2Label.textContent = "Computer";
+
   gameContainer.appendChild(player2Label);
   p2gameBoard = document.createElement("div");
   p2gameBoard.setAttribute("class", "player2-board");
   gameContainer.appendChild(p2gameBoard);
 
+  //shipyard container
+  const shipyardContainer = document.createElement("div");
+  shipyardContainer.setAttribute("class", "shipyardContainer");
+
   //Shipyard
   const shipyard = document.createElement("div");
   shipyard.setAttribute("class", "shipyard");
-  gameContainer.appendChild(shipyard);
+  shipyardContainer.appendChild(shipyard);
   shipyard.textContent = "";
 
   //1
@@ -107,7 +117,9 @@ function setUpDom() {
 
   shipyardShips = [ship1, ship2, ship3, ship4, ship5];
 
+  main.appendChild(infoSection);
   main.appendChild(gameContainer);
+  main.appendChild(shipyardContainer);
 
   return {
     gameContainer,
@@ -338,4 +350,5 @@ export {
   p1BoardInstance,
   p2BoardInstance,
   messageBox,
+  playerName,
 };

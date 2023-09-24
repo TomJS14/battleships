@@ -1,6 +1,6 @@
 /** @format */
 
-import { p1gameBoard } from "./main.js";
+import { p1gameBoard, playerName } from "./main.js";
 
 const renderGameBoard = (board, container) => {
   const gridSize = 10;
@@ -10,6 +10,17 @@ const renderGameBoard = (board, container) => {
   boardContainer.classList.add(
     container === p1gameBoard ? "player1" : "player2"
   );
+  const player1label = document.createElement("p");
+  player1label.textContent = playerName ? playerName : "You";
+  const player2label = document.createElement("p");
+  player2label.textContent = "Computer";
+
+  if (container === p1gameBoard) {
+    container.appendChild(player1label);
+  } else {
+    container.appendChild(player2label);
+  }
+
   for (let row = 0; row < gridSize; row++) {
     const rowElement = document.createElement("div");
     rowElement.classList.add("board-row");
