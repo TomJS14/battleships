@@ -5,7 +5,50 @@ import { ship, gameBoard, player } from "./game.js";
 import { renderGameBoard } from "./render.js";
 import backgroundImage from "./wallpaper.jpg";
 const main = document.querySelector(".main");
-const playerName = prompt("What's your name", "You");
+let playerName;
+
+//Splash Screen
+(function splashScreen() {
+  main.classList.add("load");
+
+  //container
+  const splashScreenContainer = document.createElement("div");
+  splashScreenContainer.classList.add("container");
+
+  //Title
+  const title = document.createElement("div");
+  title.classList.add("title");
+  title.textContent = "BATTLESHIPS";
+
+  //Name Input
+  const namePrompt = document.createElement("input");
+  namePrompt.classList.add("nameInput");
+  namePrompt.placeholder = "Enter Your Name";
+  namePrompt.addEventListener("input", updateName);
+
+  //GameButton
+  const mainButton = document.createElement("button");
+  mainButton.classList.add("start");
+  mainButton.textContent = "START GAME";
+  mainButton.addEventListener("click", loadGame);
+
+  //Append Elements
+  splashScreenContainer.appendChild(title);
+  splashScreenContainer.appendChild(namePrompt);
+  splashScreenContainer.appendChild(mainButton);
+  main.appendChild(splashScreenContainer);
+})();
+
+function updateName(e) {
+  playerName = e.target.value;
+  console.log(playerName);
+}
+
+function loadGame() {
+  main.textContent = "";
+  setUpDom();
+  initialise();
+}
 
 const backgroundImg = document.querySelector(".background-img");
 backgroundImg.style.backgroundImage = `url(${backgroundImage})`;
@@ -344,10 +387,6 @@ function handleResultValidation() {
     }
   }
 }
-
-//SETUP GAME
-setUpDom();
-initialise();
 
 export {
   player1Board,
