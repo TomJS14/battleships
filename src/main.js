@@ -4,11 +4,26 @@ require("./styles.css");
 import { ship, gameBoard, player } from "./game.js";
 import { renderGameBoard } from "./render.js";
 import backgroundImage from "./wallpaper.jpg";
+import shotSound from "./shotSound.mp3";
+
 const main = document.querySelector(".main");
 let playerName;
 
+const theShot = new Audio(shotSound);
+theShot.addEventListener("canplaythrough", () => {
+  theShot
+    .play()
+    .then(() => {})
+    .catch((error) => {
+      console.log(error);
+    });
+});
+console.log(theShot);
+
+//
+
 //Splash Screen
-(function splashScreen() {
+function splashScreen() {
   main.classList.add("load");
 
   //container
@@ -37,7 +52,11 @@ let playerName;
   splashScreenContainer.appendChild(namePrompt);
   splashScreenContainer.appendChild(mainButton);
   main.appendChild(splashScreenContainer);
-})();
+
+  //soundElements
+}
+
+splashScreen();
 
 function updateName(e) {
   playerName = e.target.value;
@@ -46,6 +65,14 @@ function updateName(e) {
 
 function loadGame() {
   main.textContent = "";
+  theShot
+    .play()
+    .then(() => {
+      console.log("Audio played");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   setUpDom();
   initialise();
 }

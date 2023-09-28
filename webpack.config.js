@@ -47,14 +47,14 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        test: /\.(png|svg|jpg|jpeg|gif|mp3)$/i,
         type: "asset/resource",
         use: [
           {
             loader: "file-loader",
             options: {
-              limit: 8192,
-              name: "images/[name].[ext]",
+              outputPath: "./",
+              name: "[name].[ext]",
             },
           },
         ],

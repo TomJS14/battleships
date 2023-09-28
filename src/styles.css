@@ -232,6 +232,10 @@ input {
   width: 12rem;
 }
 
+.destroyer {
+  width: 12rem;
+}
+
 .battleship {
   width: 9rem;
 }
