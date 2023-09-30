@@ -1,29 +1,33 @@
 <!-- @format -->
 
-# battleships
+<div align="center">
+  
+<img src="" alt="battleship game" width="50%" style="border-radius: 10px" />
+  
+</div>
 
-1. Game.js for the game logic
-2. Render.js for rendering the board
-3. main.js for the game loop, setting up players, positions, attacks etc.
+# Battleships
 
-NEXT TO DO - Set flag for win and turn off event listeners if won
+## 👨‍💻About this Project
 
-BUG
+This is the final project of the Javascript module for The Odin Project, it is not made for mobile screens (yet)
 
-Player boards need to have global scope
-However destructuring in the initialisation is causing a redeclaration issue
+## Instructions
 
-The boards don't reset their state correctly unless given global scope (In the current implementation)
+- Enter your name and hit start (If no name, player 1 will default to 'You')
+- The Game will prompt you to place your ships
+- Once all are placed, you can hit start & a short beginning sound will play. (To mute, you can mute your browser, I will add sound controls later)
+- Continue taking shots until there is a winner
+- Hit restart to replay
+- The Ai's shots at this point are random (I will update later)
 
-# To do today
+## Additional Functionality / Or Updates to be made
 
-1. Fix issue where old game state perists (Dropped array and dom)
+-
+- Update the animations that are triggered by shots to only trigger on inital hit/miss
+- Add the ability to toggle ships orientation prior to placement
+- Add styling that shows expected ship placement while dragging a ship
+- Update the random placement for AI, to vary positions in each game
+- Update AI with smarter shot logic (Attack adjacent cells to a previously hit cell)
 
-https://www.wallpaperflare.com/white-and-gray-battleship-the-sky-water-clouds-sea-mountains-wallpaper-eefj/download
-
-# to do after
-
-2. Reset shipyyard when game is reset - create DOM in JS instead of HTML (Clear the dropped array)
-3. Update messages between shots and as game is started
-4. Update styling of shots
-5. Allow ships to be 'flipped' to horizontal / vertical
+Wallpaper from - [https://www.wallpaperflare.com/white-and-gray-battleship-the-sky-water-clouds-sea-mountains-wallpaper-eefj]

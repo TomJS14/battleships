@@ -13,6 +13,14 @@ import {
 import { renderGameBoard } from "./render";
 
 let currentPlayer = "Human";
+const theHit = new Audio();
+theHit.src = "./shotSound.mp3";
+
+const theMiss = new Audio();
+theMiss.src = "./splash.mp3";
+
+const theSunk = new Audio();
+theSunk.src = "./sunk.mp3";
 
 const ship = (type, length, hitCount, sinkStatus, isVertical) => {
   const hit = (ship) => {
@@ -159,13 +167,40 @@ const player = (name, board, type, ships) => {
 
       //To Update messages to display which ship is sunk
       if (attackResult == "HIT") {
+        theHit.currentTime = 1; //rewind
+        theHit
+          .play()
+          .then(() => {
+            console.log("Audio played");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
         messageBox.textContent = `You've got a ${attackResult}!`;
       }
       if (attackResult == "MISS") {
+        theMiss.currentTime = 1;
+        theMiss
+          .play()
+          .then(() => {
+            console.log("Audio played");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
         messageBox.textContent = `You Missed`;
       }
       if (attackResult == "SUNK") {
         messageBox.textContent = `BOOM! You sunk computers ship`;
+        theSunk.currentTime = 1;
+        theSunk
+          .play()
+          .then(() => {
+            console.log("Audio played");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
 
       renderGameBoard(player2Board, p2gameBoard);
@@ -185,12 +220,39 @@ const player = (name, board, type, ships) => {
 
           //To Update messages to display which ship is sunk
           if (aiAttackResult == "HIT") {
+            theHit.currentTime = 1; //rewind
+            theHit
+              .play()
+              .then(() => {
+                console.log("Audio played");
+              })
+              .catch((error) => {
+                console.log(error);
+              });
             messageBox.textContent = `They've got a ${aiAttackResult}!`;
           }
           if (aiAttackResult == "MISS") {
+            theMiss.currentTime = 1;
+            theMiss
+              .play()
+              .then(() => {
+                console.log("Audio played");
+              })
+              .catch((error) => {
+                console.log(error);
+              });
             messageBox.textContent = `They Missed!`;
           }
           if (aiAttackResult == "SUNK") {
+            theSunk.currentTime = 1;
+            theSunk
+              .play()
+              .then(() => {
+                console.log("Audio played");
+              })
+              .catch((error) => {
+                console.log(error);
+              });
             messageBox.textContent = `BOOM! Computer sunk your ship!`;
           }
 

@@ -5,22 +5,25 @@ import { ship, gameBoard, player } from "./game.js";
 import { renderGameBoard } from "./render.js";
 import backgroundImage from "./wallpaper.jpg";
 import shotSound from "./shotSound.mp3";
+import splash from "./splash.mp3";
+import sunkSound from "./sunk.mp3";
+import startMusic from "./dramaticStart.mp3";
+import winMusic from "./winFanfare.mp3";
 
 const main = document.querySelector(".main");
 let playerName;
 
-const theShot = new Audio(shotSound);
-theShot.addEventListener("canplaythrough", () => {
-  theShot
-    .play()
-    .then(() => {})
-    .catch((error) => {
-      console.log(error);
-    });
-});
-console.log(theShot);
+const theShot = new Audio();
+theShot.src = "./shotSound.mp3";
 
-//
+const startSound = new Audio();
+startSound.src = "./dramaticStart.mp3";
+
+const theWin = new Audio();
+theWin.src = "./winFanfare.mp3";
+
+const theDefeat = new Audio();
+theDefeat.src = "./defeated.mp3";
 
 //Splash Screen
 function splashScreen() {
@@ -65,7 +68,9 @@ function updateName(e) {
 
 function loadGame() {
   main.textContent = "";
-  theShot
+  //Play sound - testing
+  startSound.currentTime = 1; //rewind
+  startSound
     .play()
     .then(() => {
       console.log("Audio played");
@@ -373,6 +378,7 @@ function dropShip(e) {
     notDropped = true;
     messageBox.textContent = "Can't go there, try again!";
   }
+
   renderGameBoard(player1Board, p1gameBoard);
   draggedShip.classList.remove("dragging");
 }
@@ -407,9 +413,26 @@ function handleResultValidation() {
     p2gameBoard.removeEventListener("click", selectTarget);
 
     if (isGameWon) {
+      theWin
+        .play()
+        .then(() => {
+          console.log("Audio played");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
       messageBox.textContent = "Game over, you win!";
     }
     if (isGameLost) {
+      theDefeat
+        .play()
+        .then(() => {
+          console.log("Audio played");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
       messageBox.textContent = "Game over, you Lose!";
     }
   }

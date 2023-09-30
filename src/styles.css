@@ -163,24 +163,72 @@ input {
   flex: 1;
   width: 1rem;
   height: 1rem;
-  border: 0.1px dotted #ccc;
+  border: 0.1px dotted rgba(255, 255, 255, 0.6);
   border-radius: 3px;
   background-color: #1b95e0;
   cursor: url("crosshair.png") 12 12, crosshair;
 }
 
 .ship {
+  position: relative;
   background-color: grey;
   height: 1rem;
-  border: 1px solid #1b95e0;
+}
 
-  border-radius: 1px;
+.hitShip {
+  background-color: grey;
+}
+
+.ship::before {
+  content: "";
+  position: absolute;
+  border: 0.3vmin solid rgba(255, 255, 255, 0.6);
+  top: -1px;
+  bottom: -1px;
+  left: -1px;
+  right: -1px;
+}
+
+[data-orientation="vertical"]::before {
+  animation: ripplesY 3s linear infinite;
+  border-top: none;
+  border-bottom: none;
+}
+
+[data-orientation="horizontal"]::before {
+  animation: ripplesX 3s linear infinite;
+  border-left: none;
+  border-right: none;
+}
+
+@keyframes ripplesX {
+  0% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scaleX(1.6);
+  }
+}
+
+@keyframes ripplesY {
+  0% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scaleY(1.6);
+  }
 }
 
 .enemy-ship {
   background-color: #1b95e0;
   height: 1rem;
-  border: 0.1px dotted #ccc;
+  /* border: 0.1px dotted #ccc; */
 }
 
 .draggable {
@@ -194,39 +242,6 @@ input {
 .highlighted {
   opacity: 0.5;
 }
-
-/* [data-ship-type="carrier"] {
-  background-color: #222 !important;
-  border-radius: 6px;
-  position: relative;
-} */
-
-/* [data-ship-type="carrier"]::before {
-  content: "";
-  width: 80%;
-  height: 60%;
-  background: #ccc;
-  position: absolute;
-  top: 10%;
-  left: 10%;
-}
-
-[data-ship-type="carrier"]::after {
-  content: "";
-  width: 20px;
-  height: 10px;
-  background: #555;
-  position: absolute;
-  top: 10%;
-  left: 50%;
-  transform: translateX(-50%);
-} */
-
-/* [data-ship-type="destroyer"] {
-  background-color: #222 !important;
-  border-radius: 10px;
-  position: absolute;
-} */
 
 .carrier {
   width: 12rem;
@@ -253,22 +268,61 @@ input {
 }
 
 .hit,
+.miss,
 .sunk {
-  background-color: red;
-  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.hit::after,
+.miss::after {
+  content: "";
+  position: absolute;
+  border-radius: 100%;
+  width: 2vmin;
+  height: 2vmin;
+}
+
+.sunk {
+  background-color: grey;
+}
+
+.miss::after {
+  background-color: white;
+}
+
+.hit::after {
+  background-color: red;
+}
+
+.miss::before {
+  content: "";
+  position: absolute;
+  animation: miss 0.2s ease-out forwards;
+  border: 0.1vmin solid white;
+  border-radius: 100%;
+  width: 2vmin;
+  height: 2vmin;
+}
+
+/* @keyframes miss {
+  0% {
+    opacity: 1;
+    transform: scale(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(4);
+  }
+} */
 
 .sunk::before {
   content: "X";
   color: rgb(211, 9, 50);
   border-radius: 10px;
   position: relative;
-  bottom: 20%;
-  left: 20%;
-}
-
-.miss {
-  background-color: white;
 }
 
 .player1 {

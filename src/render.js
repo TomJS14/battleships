@@ -41,16 +41,22 @@ const renderGameBoard = (board, container) => {
           cellElement.classList.add("enemy-ship");
         }
         cellElement.dataset.shipType = `${board[row][col].type}`;
+        cellElement.dataset.orientation = board[row][col].isVertical
+          ? "vertical"
+          : "horizontal";
       } else if (board[row][col] === "HIT") {
         cellElement.classList.add("hit");
         cellElement.classList.add("disabled");
+        cellElement.classList.add("hitShip");
       } else if (board[row][col] === "MISS") {
         cellElement.classList.add("miss");
         cellElement.classList.add("disabled");
       } else if (board[row][col] === "SUNK") {
         cellElement.classList.add("sunk");
         cellElement.classList.add("disabled");
+        cellElement.classList.add("hitShip");
       }
+
       rowElement.appendChild(cellElement);
     }
     boardContainer.appendChild(rowElement);
