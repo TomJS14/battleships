@@ -2,7 +2,7 @@
 
 <div align="center">
   
-<img src="" alt="battleship game" width="50%" style="border-radius: 10px" />
+<img src="https://github.com/TomJS14/battleships/assets/133436558/f27f6f21-0c89-4d5b-8a17-b5cdf2794286" alt="battleship game" width="50%" style="border-radius: 10px" />
   
 </div>
 
