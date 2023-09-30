@@ -75,7 +75,7 @@ input {
 
 .game-container {
   display: flex;
-  margin: 35px;
+  margin: 5px;
   justify-content: center;
   gap: 50px;
 }
@@ -228,7 +228,6 @@ input {
 .enemy-ship {
   background-color: #1b95e0;
   height: 1rem;
-  /* border: 0.1px dotted #ccc; */
 }
 
 .draggable {

@@ -390,7 +390,7 @@ function selectTarget(e) {
       const col = parseInt(cell.dataset.col, 10);
       const row = parseInt(cell.dataset.row, 10);
       player1.attack(player2, row, col);
-      setTimeout(handleResultValidation, 800); //Set this longer than the move delay
+      setTimeout(handleResultValidation, 800); //Set this longer than the move delay//
     }
   }
 }
