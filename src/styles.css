@@ -10,7 +10,6 @@
 }
 
 html {
-  overflow: hidden;
   overscroll-behavior: none;
   height: 100%;
 }
@@ -69,7 +68,7 @@ input {
 
 .info {
   display: flex;
-  gap: 5px;
+  gap: 10px;
   flex-direction: column;
   align-items: center;
 }
@@ -105,16 +104,17 @@ input {
 .shipyard {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 10px;
   background-color: rgba(56, 118, 217, 0.4);
   padding: 10px;
-  width: 38vw;
-  min-height: 15vw;
+  width: 20vw;
+  min-height: 5vw;
   border: 1px dashed black;
   border-radius: 8px;
 }
 
 .start {
+  margin-top: 50px;
   background: #5e5df0;
   border-radius: 99px;
   box-shadow: #5e5df0 0 10px 20px -10px;
